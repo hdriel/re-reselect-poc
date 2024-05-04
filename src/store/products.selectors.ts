@@ -1,13 +1,13 @@
 // https://github.com/reduxjs/reselect/tree/v4.0.0#sharing-selectors-with-props-across-multiple-component-instances
-import { createSelector } from 'reselect'
+import { createSelector } from 'reselect';
 // https://github.com/toomuchdesign/re-reselect
-import { createCachedSelector, FifoObjectCache, LruObjectCache } from 're-reselect'
+import { createCachedSelector, FifoObjectCache, LruObjectCache } from 're-reselect';
 
 // without extra reselect
-export const getTotalProductsSelector = state => state.products.products.length;
+export const getTotalProductsSelector = (state) => state.products.products.length;
 
 // original
-export const getProductIdsSelector = state => state.products.products.map(p => p.id);
+export const getProductIdsSelector = (state) => state.products.products.map((p) => p.id);
 
 // with reselect caching
 // export const getProductIdsSelector = createSelector(
@@ -31,11 +31,11 @@ export const getProductIdsSelector = state => state.products.products.map(p => p
 
 // with re-reselect caching
 export const getProductByIdSelector = createCachedSelector(
-    [(state, productId) => state.products.products, (state, productId) => productId ],
+    [(state, productId) => state.products.products, (state, productId) => productId],
     (products, productId) => {
-        return products.find(p => p.id === productId)
+        return products.find((p) => p.id === productId);
     }
-)((state, productId) => productId)
+)((state, productId) => productId);
 // )({
 //     keySelector: (state, productId) => productId,
 //     cacheObject: new FifoObjectCache({cacheSize: 5})

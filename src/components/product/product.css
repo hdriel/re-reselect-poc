@@ -24,7 +24,6 @@
 }
 
 .product .details .image-wrapper {
-
 }
 
 .product .details .data-wrapper {
@@ -36,7 +35,6 @@
 }
 
 .product .name {
-    
 }
 
 .product .price::after {
@@ -47,4 +45,3 @@
     background: #535bf2;
     color: white;
 }
-
