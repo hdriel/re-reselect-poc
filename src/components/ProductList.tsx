@@ -1,26 +1,27 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {shallowEqual, useSelector} from 'react-redux';
 import Product from './product/Product.connector';
-import { getProductIdsSelector } from '../store/products.selectors';
+import {getProductIdsSelector} from '../store/products.selectors';
 
 interface ProductConnectorProps {
-    productIds: string[];
 }
 
-const ProductList: React.FC<ProductConnectorProps> = ({ productIds }) => {
-    console.log('ProductList render');
+const ProductList: React.FC<ProductConnectorProps> = ({}) => {
+    console.log('COMPONENT: ProductList[] render');
+
+    const productIds = useSelector((state) => {
+        console.log('USE_SELECTOR: ProductList[]');
+        return getProductIdsSelector(state)
+    }, shallowEqual);
 
     return (
         <div className="products-list">
             {productIds.map((productId) => (
-                <Product key={productId} id={productId} />
+                <Product key={productId} id={productId}/>
             ))}
         </div>
     );
 };
 
-const mapStateToProps = (state: any) => ({
-    productIds: getProductIdsSelector(state),
-});
 
-export default connect(mapStateToProps)(ProductList);
+export default ProductList

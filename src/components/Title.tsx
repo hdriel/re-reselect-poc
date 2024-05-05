@@ -1,22 +1,30 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { addProductsAction } from '../store/products.slice';
-import { getTotalProductsSelector } from '../store/products.selectors';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
+import {addProductsAction} from '../store/products.slice';
+import {getProductIdsSelector} from '../store/products.selectors';
 
 interface TitleProps {
-    totalProducts: number;
-    updateStore: () => void;
 }
 
-const Title: React.FC<TitleProps> = ({ totalProducts, updateStore }) => {
-    console.log('Title render');
+const Title: React.FC<TitleProps> = ({}) => {
+    console.log('COMPONENT: Title render');
+
+    const dispatch = useDispatch()
+    // @ts-ignore
+    const updateStore = () => dispatch(addProductsAction());
+
+    const totalProducts = useSelector((state) => {
+        console.log('USE_SELECTOR: ProductList');
+        return getProductIdsSelector(state)
+    }, shallowEqual);
+
 
     return (
-        <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h1 style={{ fontSize: '40px' }}>Product List ({totalProducts})</h1>
+        <div style={{display: 'flex', gap: '10px', justifyContent: 'space-between', alignItems: 'center'}}>
+            <h1 style={{fontSize: '40px'}}>Product List ({totalProducts})</h1>
             <button
                 onClick={() => updateStore()}
-                style={{ height: 'max-content', backgroundColor: '#0d011f', color: 'white' }}
+                style={{height: 'max-content', backgroundColor: '#0d011f', color: 'white'}}
             >
                 ADD
             </button>
@@ -24,15 +32,5 @@ const Title: React.FC<TitleProps> = ({ totalProducts, updateStore }) => {
     );
 };
 
-const mapStateToProps = (state: any) => ({
-    totalProducts: getTotalProductsSelector(state),
-});
 
-const mapDispatchToProps = (dispatch: any) => ({
-    updateStore: () => {
-        // @ts-ignore
-        dispatch(addProductsAction());
-    },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Title);
+export default Title

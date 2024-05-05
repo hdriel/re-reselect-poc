@@ -1,30 +1,27 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector} from 'react-redux';
 import Product from './Product';
 import { getProductByIdSelector } from '../../store/products.selectors';
-import type { IProduct } from '../../decs';
 import { updateProductAction } from '../../store/products.slice';
 
 interface ProductConnectorProps {
     id: string;
-    product: IProduct;
-    updatePrice: (productId: string, price: number) => void;
 }
 
-const ProductConnector: React.FC<ProductConnectorProps> = ({ id, product, updatePrice }) => {
-    console.log('ProductConnector render', id);
+const ProductConnector: React.FC<ProductConnectorProps> = ({ id }) => {
+    console.log('COMPONENT: ProductConnector render', id);
+
+    const product = useSelector((state) => {
+        console.log('USE_SELECTOR: ProductConnector');
+        // @ts-ignore
+        return getProductByIdSelector(state, id)
+    }, shallowEqual);
+
+    const dispatch = useDispatch();
+    // @ts-ignore
+    const updatePrice = (productId: string, price: number) => dispatch(updateProductAction({ id: productId, price }));
+
     return <Product id={id} {...product} updatePrice={updatePrice} />;
 };
 
-const mapStateToProps = (state, props) => ({
-    product: getProductByIdSelector(state, props.id),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-    updatePrice: (productId: string, price: number) => {
-        // @ts-ignore
-        dispatch(updateProductAction({ id: productId, price }));
-    },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductConnector);
+export default ProductConnector

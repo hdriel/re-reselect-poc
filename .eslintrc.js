@@ -1,5 +1,12 @@
 module.exports = {
     root: true,
+    parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: ['./tsconfig.json', './tsconfig.node.json'],
+        tsconfigRootDir: __dirname,
+        ecmaFeatures: { jsx: true }
+    },
     env: {
         browser: true,
         es2020: true,
@@ -7,21 +14,16 @@ module.exports = {
     },
     extends: [
         'eslint:recommended',
-        'plugin:@typescript-eslint/recommended',
+        'plugin:react/jsx-runtime',
+        'plugin:@typescript-eslint/recommended-type-checked',
         'plugin:react-hooks/recommended',
+        'plugin:@typescript-eslint/stylistic-type-checked',
     ],
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
     },
     parser: '@typescript-eslint/parser',
-    parserOptions: {
-        tsconfigRootDir: __dirname,
-        ecmaFeatures: { jsx: true },
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        project: 'tsconfig.json',
-    },
     ignorePatterns: ['dist', '.eslintrc.js'],
     plugins: ['react', 'react-refresh', '@typescript-eslint', 'prettier'],
     rules: {
